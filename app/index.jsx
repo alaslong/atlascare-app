@@ -14,7 +14,7 @@ const Index = () => {
 
       if (isAuthenticated) {
         // If the user is authenticated, redirect to the scan screen
-        router.navigate("/scan");
+        router.navigate("/main");
       } else {
         // If not authenticated, redirect to the login screen
         router.navigate("/login");

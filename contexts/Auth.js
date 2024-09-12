@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }) => {
         },
         onSuccess: (userData) => {
             queryClient.setQueryData(["auth", "user"], userData); // Set user data in cache
-            router.push("/scan"); // Navigate to scan
+            router.push("/main"); // Navigate to scan
         },
         onError: (error) => {
             console.error("Login error:", error);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Stack } from "expo-router";
+
 import { AuthProvider } from "@/contexts/Auth";
 import { DataProvider } from "@/contexts/Data";
 import "@/global.css";
@@ -10,6 +11,8 @@ import * as Localization from "expo-localization";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import ScanHeader from "@/components/scan/Header";
 
 import en from "@/utils/languages/en-GB.json";
 import de from "@/utils/languages/de-DE.json";
@@ -70,28 +73,14 @@ const RootLayout = () => {
               }}
             />
             <Stack.Screen
-              name="scan"
+              name="main"
               options={{
-                headerTitle: "Scan",
-                headerBackVisible: false,
+                headerShown: false,
                 gestureEnabled: false,
               }}
             />
+
             <Stack.Screen
-              name="settings"
-              options={{
-                headerTitle: "Settings",
-                gestureEnabled: false,
-              }}
-            />
-            <Stack.Screen
-              name="inventory"
-              options={{
-                headerTitle: "Inventory",
-                gestureEnabled: false,
-              }}
-            />
-                        <Stack.Screen
               name="productDetails"
               options={{
                 headerTitle: "Product Details",

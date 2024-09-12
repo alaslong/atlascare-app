@@ -1,8 +1,8 @@
 import React from "react";
 import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
 import { useAuth } from "@/contexts/Auth";
-import PracticeSelector from "../components/settings/PracticeSelector";
-import LanguageSelector from "../components/settings/LanguageSelector";
+import PracticeSelector from "@/components/settings/PracticeSelector";
+import LanguageSelector from "@/components/settings/LanguageSelector";
 import { useTranslation } from "react-i18next";
 
 const Settings = () => {

@@ -11,17 +11,14 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import LoadingScreen from "@/components/LoadingScreen";
 import Overlay from "@/components/scan/Overlay";
 import AnimatedBorder from "@/components/scan/AnimatedBorder";
-import { useRouter } from "expo-router";
-import { FontAwesome6 } from "@expo/vector-icons";
-import scanHandler from "../utils/scanHandler"; // Import the refactored function
+import scanHandler from "@/utils/scanHandler"; // Import the refactored function
 
-const Home = () => {
+const Scan = () => {
   const [permission, requestPermission] = useCameraPermissions();
   const [canScan, setCanScan] = useState(true);
   const [paused, setPaused] = useState(false);
   const [lastScannedData, setLastScannedData] = useState(null);
   const cameraRef = useRef(null);
-  const router = useRouter();
 
   const borderColor = useRef(new Animated.Value(0)).current;
   const { width, height } = Dimensions.get("window");
@@ -114,12 +111,7 @@ const Home = () => {
 
       <View className="absolute h-full w-full flex-col justify-between items-center p-5 pb-14">
         <View className="flex-row h-1/2 w-full justify-between">
-          <TouchableOpacity onPress={() => router.navigate("/inventory")}>
-            <FontAwesome6 size={24} name="warehouse" regular color="gray" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.navigate("/settings")}>
-            <FontAwesome6 size={24} name="gear" regular color="gray" />
-          </TouchableOpacity>
+          
         </View>
         <View className="flex-1 justify-between items-center mt-11">
           {!paused ? (
@@ -140,4 +132,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Scan;
