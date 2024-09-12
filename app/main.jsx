@@ -9,7 +9,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const Main = () => {
   return (
-    <SafeAreaView edges={['top']} className="flex-1 h-screen">
+    <SafeAreaView edges={['top']} className="h-screen">
       <StatusBar
         barStyle="dark-content"
         backgroundColor="transparent"
@@ -23,11 +23,8 @@ const Main = () => {
           tabBarStyle: {
             backgroundColor: "transparent",
           },
-          tabBarShowLabel: false, // Hide label
-          tabBarIconStyle: {
-            marginHorizontal: 48,
-            marginBottom: 4,
-          },
+          tabBarShowLabel: true, // Hide label
+
         }}
       >
         <Tab.Screen
