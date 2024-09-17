@@ -1,7 +1,8 @@
-import { Vibration, Animated } from "react-native";
+import { Vibration } from "react-native";
+import Animated, { withTiming } from "react-native-reanimated"; // Import withTiming for reanimated animations
 import { throttle } from "lodash";
 import { useData } from "@/contexts/Data";
-import { useAddToInventory, useFetchInventoryProduct, useRemoveFromInventory } from "./mutations/inventory/products";
+import { useFetchInventoryProduct } from "./mutations/inventory/products";
 import parseBarcode from "./barcodes/parseBarcode";
 
 // Scan handler that works with the API
@@ -9,7 +10,7 @@ const scanHandler = ({
   canScan,
   paused,
   lastScannedData,
-  borderColor,
+  setColourStatus,
   setCanScan,
   setPaused,
   setLastScannedData,
@@ -17,10 +18,10 @@ const scanHandler = ({
   scannedProducts,
   setScannedProducts, // Pass setScannedProducts to update modal content
 }) => {
-  const { scanMode, practices } = useData(); // Fetch the selected practice
+  const { practices } = useData(); // Fetch the selected practice
 
-  
-  
+
+
   // Fetch product info mutation
   const fetchInventoryProduct = useFetchInventoryProduct();
 
@@ -40,16 +41,11 @@ const scanHandler = ({
         setLastScannedData(data);
         Vibration.vibrate(); // Trigger vibration
 
-        // Trigger border color animation
-        Animated.timing(borderColor, {
-          toValue: 1,
-          duration: 150,
-          useNativeDriver: true,
-        }).start();
+        setColourStatus('green')
 
         try {
           const payload = {
-            clientPracticeId: practices.selectedPractice.id,
+            clientPracticeId: practices.selected.id,
             productNumber: parsedBarcode.productNumber,
             batchNumber: parsedBarcode.batchNumber,
           };
@@ -86,7 +82,7 @@ const scanHandler = ({
         } catch (error) {
           console.error("Error fetching product information", error);
         }
-  
+
       }
     },
     1000, // Throttle function to prevent too many requests

@@ -9,15 +9,15 @@ const Overlay = ({
   windowY,
   windowWidth,
   windowHeight,
-  paused
+  paused,
 }) => {
   return (
-    <View className="absolute inset-0">
+    <View className="absolute" >
       <Svg height={height} width={width}>
-        <Defs>
+        <Defs> 
           <Mask id="mask" x="0" y="0" width={width} height={height}>
             {/* Mask: White makes the area visible, black creates transparency */}
-            <Rect x="0" y="0" width={width} height={height} fill="white" />
+            <Rect x="0" y="0" width={width} height={height} fill="white"  />
             <Rect
               x={windowX}
               y={windowY}
@@ -25,6 +25,7 @@ const Overlay = ({
               height={windowHeight}
               rx="30"
               ry="30"
+               
             />
           </Mask>
         </Defs>
@@ -37,13 +38,14 @@ const Overlay = ({
           height={height}
           fill="rgba(255, 255, 255, 0.95)" // Background overlay color
           mask="url(#mask)"
+         
         />
       </Svg>
 
       {/* Darken the cutout when paused by adding an extra overlay */}
       {paused && (
-        <View
-          className="absolute bg-black/35 rounded-[30px]"
+        <View 
+          className="absolute bg-white/25 rounded-[30px]"
           style={{
             left: windowX,
             top: windowY,

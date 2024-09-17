@@ -13,8 +13,8 @@ import { useData } from "@/contexts/Data";
 import ToggleButton from "./ToggleButton";
 
 const modes = [
-  { mode: "store", label: "Store" },
   { mode: "retrieve", label: "Retrieve" },
+  { mode: "store", label: "Store" },
 ];
 
 const ScanModeSelector = () => {

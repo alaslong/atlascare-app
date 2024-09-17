@@ -4,14 +4,13 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
-  Animated,
   SafeAreaView,
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import LoadingScreen from "@/components/LoadingScreen";
 import Overlay from "@/components/scan/Overlay";
-import AnimatedBorder from "@/components/scan/AnimatedBorder";
-import scanHandler from "../../utils/scanHandler"; // Import the refactored function
+import ViewFinderBorder from "@/components/scan/ViewFinderBorder";
+import scanHandler from "../../utils/scanHandler";
 import ScannedProductsList from "../../components/scan/ScannedProductsList";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useData } from "@/contexts/Data";
@@ -21,11 +20,12 @@ const Scan = () => {
   const [canScan, setCanScan] = useState(true);
   const [paused, setPaused] = useState(false);
   const [lastScannedData, setLastScannedData] = useState(null);
-  const [scannedProducts, setScannedProducts] = useState([]); // Initialize with an empty array
+  const [scannedProducts, setScannedProducts] = useState([]);
+  const [colourStatus, setColourStatus] = useState("default");
+  
   const cameraRef = useRef(null);
-  const { scanMode } = useData(); // Fetch the selected practice
+  const { scanMode } = useData();
 
-  const borderColor = useRef(new Animated.Value(0)).current;
   const { width, height } = Dimensions.get("window");
 
   const windowWidth = 350;
@@ -48,28 +48,24 @@ const Scan = () => {
     canScan,
     paused,
     lastScannedData,
-    borderColor,
     setCanScan,
     setPaused,
     setLastScannedData,
     barcodeWithin,
     scannedProducts,
-    setScannedProducts, // Pass setScannedProducts to the handler
-
+    setScannedProducts,
+    setColourStatus
   });
 
   const unpauseScanning = () => {
     setPaused(false);
     setCanScan(true);
 
-    Animated.timing(borderColor, {
-      toValue: 0,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
+setColourStatus('default')
 
     setTimeout(() => setLastScannedData(null), 1000);
   };
+
 
 
   if (!permission) return <LoadingScreen />;
@@ -85,13 +81,8 @@ const Scan = () => {
       </View>
     );
 
-  const interpolatedBorderColor = borderColor.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["#FFFFFF", "#90EE90"],
-  });
-
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView className="bg-gray-50 flex-1">
       <SafeAreaView className="flex-1">
         <View className="flex-1">
           <CameraView
@@ -100,12 +91,13 @@ const Scan = () => {
             onBarcodeScanned={canScan && !paused ? handleBarcodeScanned : null}
             ref={cameraRef}
           />
-          <AnimatedBorder
+          {/* Pass the unified animated style */}
+          <ViewFinderBorder
             windowX={windowX}
             windowY={windowY}
             windowWidth={windowWidth}
             windowHeight={windowHeight}
-            interpolatedBorderColor={interpolatedBorderColor}
+            colourStatus={colourStatus}
           />
 
           <Overlay
@@ -126,7 +118,9 @@ const Scan = () => {
                   <Text className="text-xl text-gray-600">{`Scan to ${scanMode}`}</Text>
                 ) : (
                   <TouchableOpacity onPress={unpauseScanning}>
-                    <Text className="text-xl text-gray-600">Tap to continue</Text>
+                    <Text className="text-xl text-gray-600">
+                      Tap to continue
+                    </Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -134,13 +128,11 @@ const Scan = () => {
           </View>
 
           {/* Modal for scanned products */}
-      
-            <ScannedProductsList
-              scannedProducts={scannedProducts}
-              setScannedProducts={setScannedProducts}
-              out={false} // Adjust based on the current mode
-            />
-     
+          <ScannedProductsList
+            scannedProducts={scannedProducts}
+            setScannedProducts={setScannedProducts}
+            out={false}
+          />
         </View>
       </SafeAreaView>
     </GestureHandlerRootView>

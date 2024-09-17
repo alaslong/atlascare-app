@@ -10,11 +10,11 @@ const calculateExpiryColour = (expiryDate) => {
   const daysUntilExpiry = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
 
   if (daysUntilExpiry < 0) {
-    return { label: "Expired", colour: "bg-red-500" }; // Already expired
+    return { label: "Expired", colour: "red" }; // Already expired
   } else if (daysUntilExpiry <= 14) {
-    return { label: "2 weeks", colour: "bg-orange-500" }; // Expiring within 2 weeks
+    return { label: "2 weeks", colour: "orange" }; // Expiring within 2 weeks
   } else if (daysUntilExpiry <= 30) {
-    return { label: "1 month", colour: "bg-yellow-500" }; // Expiring within 1 month
+    return { label: "1 month", colour: "#f4b800" }; // Expiring within 1 month
   }
 
   return null; // No badge needed
@@ -28,13 +28,11 @@ export const ExpiryBadge = ({ expiryDate }) => {
   }
 
   return (
-    <View className={`self-end ${colour} rounded-2xl p-1`}>
-      <FontAwesome6 size={16} name="clock" regular color="white" />
+    <View className={`self-end p-1`}>
+      <FontAwesome6 size={18} name="clock" solid color={colour} />
     </View>
   );
 };
-
-export default ExpiryBadge;
 
 // Utility to calculate stock level badge color
 const calculateQuantityColour = (

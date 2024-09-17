@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { useData } from "../contexts/Data";
-import { ExpiryBadge } from "../components/inventory/ColourCalculators"; // Import the badge utility
+import { useData } from "@/contexts/Data";
+import { ExpiryBadge } from "@/components/inventory/ColourCalculators"; // Import the badge utility
 
 const ProductDetails = () => {
   const params = useLocalSearchParams();

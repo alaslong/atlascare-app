@@ -75,7 +75,7 @@ const ScannedProductsList = ({
 
   // Centralized confirmation action for adding/removing inventory
   const handleConfirmAction = async () => {
-    const clientPracticeId = practices?.selectedPractice?.id;
+    const clientPracticeId = practices?.selected?.id;
     if (!clientPracticeId) {
       console.error("No practice selected.");
       return;
@@ -98,13 +98,13 @@ const ScannedProductsList = ({
   // Footer without using BottomSheetFooter directly (just pass the footer content)
   const renderFooter = useCallback(
     (props) => (
-      <BottomSheetFooter {...props} bottomInset={5}>
+      <BottomSheetFooter {...props} bottomInset={7} >
         <View className="flex-row mx-2 gap-2">
           <TouchableOpacity
             onPress={handleConfirmAction}
-            className="bg-blue-400 rounded-lg p-3 h-12 justify-center items-center flex-grow"
+            className="bg-[#3b8ae6] rounded-lg p-3 justify-center items-center flex-grow"
           >
-            <Text className="text-white text-center">
+            <Text className="text-white text-center text-xl font-semibold">
               {scanMode === "retrieve"
                 ? t("removeFromInventory")
                 : t("addToInventory")}
@@ -112,9 +112,9 @@ const ScannedProductsList = ({
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setScannedProducts([])}
-            className="bg-gray-300 rounded-lg p-4 h-12 justify-center items-center"
+            className="bg-gray-300 rounded-lg p-4 justify-center items-center"
           >
-            <FontAwesome6 name="xmark" color="gray" size={18} />
+            <FontAwesome6 name="xmark" color="gray" size={17} />
           </TouchableOpacity>
         </View>
       </BottomSheetFooter>
@@ -154,6 +154,9 @@ const ScannedProductsList = ({
         enablePanDownToClose={false}
         onDismiss={onClose}
         footerComponent={renderFooter} // Correctly pass the footer content
+        backgroundStyle={{backgroundColor: '#fefefe', shadowColor: '#000000', shadowOpacity: 0.1, shadowRadius: 20}}
+      
+       
       >
         <View className="flex-1 px-2">
           <FlatList

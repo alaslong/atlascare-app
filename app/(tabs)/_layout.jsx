@@ -5,11 +5,11 @@ export default TabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "blue",
+        tabBarActiveTintColor: "#3b8ae6",
         headerShown: false,
         gestureEnabled: false,
-        tabBarIconStyle: {marginBottom: -3},
-        tabBarLabelStyle: {marginBottom: -3, fontSize: 11}
+        tabBarIconStyle: { marginBottom: -3 },
+        tabBarLabelStyle: { marginBottom: -3, fontSize: 11 },
       }}
     >
       <Tabs.Screen
@@ -19,6 +19,15 @@ export default TabsLayout = () => {
           tabBarIcon: ({ color }) => (
             <FontAwesome6 size={28} name="boxes-stacked" color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="productDetails"
+        options={{
+          headerShown: true,
+          gestureEnabled: true,
+          title: "Product Details",
+          href: null,
         }}
       />
       <Tabs.Screen

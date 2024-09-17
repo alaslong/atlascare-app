@@ -69,12 +69,7 @@ const RootLayout = () => {
             />
             <Stack.Screen name="(tabs)" />
 
-            <Stack.Screen
-              name="productDetails"
-              options={{
-                title: "Product Details",
-              }}
-            />
+
           </Stack>
         </DataProvider>
       </AuthProvider>

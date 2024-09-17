@@ -48,9 +48,9 @@ const PracticeSelector = () => {
   // Render individual practice item
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => practices.setSelectedPractice(item)}
+      onPress={() => practices.setSelected(item)}
       className={`flex-1 p-4 border-gray-300 rounded-xl items-center ${
-        practices.selectedPractice?.id === item.id ? "bg-teal-300" : ""
+        practices.selected?.id === item.id ? "bg-teal-300" : ""
       }`}
     >
       <Text className="text-base">{item.name}</Text>
@@ -62,8 +62,8 @@ const PracticeSelector = () => {
       <View className="flex-row justify-between items-center">
         <Text>
           <Text className="text-xl font-semibold">{t("currentPractice")}:</Text>
-          {practices.selectedPractice && (
-            <Text className="text-xl"> {practices.selectedPractice.name}</Text>
+          {practices.selected && (
+            <Text className="text-xl"> {practices.selected.name}</Text>
           )}
         </Text>
         {/* Button to show/hide the list */}

@@ -134,8 +134,8 @@ export const DataProvider = ({ children }) => {
       isError: isPracticesError,
       error: practicesError,
       refetch: refetchPractices,
-      selectedPractice,
-      setSelectedPractice,
+      selected: selectedPractice,
+      setSelected: setSelectedPractice,
     },
     inventory: {
       data: inventory,

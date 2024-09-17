@@ -13,8 +13,8 @@ const Settings = () => {
   const { logout } = useAuth();
 
   return (
-    <SafeAreaView className="flex-1">
-      <View className="flex-1 justify-between items-center p-4">
+    <SafeAreaView className="flex-1" edges={['top']}>
+      <View className="flex-1 justify-between items-center p-2">
         <View className="w-full gap-6">
         <LanguageSelector />
 
@@ -24,7 +24,7 @@ const Settings = () => {
         </View>
 
         <TouchableOpacity
-          className="m-4 p-3 bg-red-500 rounded-xl w-full"
+          className="p-3 bg-red-500 rounded-lg w-full"
           onPress={logout}
         >
           <Text className="text-white text-center font-semibold text-xl">
