@@ -11,3 +11,4 @@ export const removeProduct = async (body) => {
   const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/api/inventory/remove`, body);
   return response.data;
 };
+

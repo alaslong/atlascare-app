@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
-import { useData } from "../contexts/Data";
+import { SafeAreaView, View, Text, FlatList, Image, TouchableOpacity } from "react-native";
+import { useData } from "../../contexts/Data";
 import { useRouter } from "expo-router"; // Import the router hook
 import {
   ExpiryBadge,
   QuantityText,
-} from "../components/inventory/ColourCalculators"; // Import the colour utilities
+} from "../../components/inventory/ColourCalculators"; // Import the colour utilities
 
 const Inventory = () => {
   const { inventory } = useData();
@@ -79,6 +79,7 @@ const Inventory = () => {
   };
 
   return (
+    <SafeAreaView className="flex-1 bg-white">
     <View className="flex-1 bg-white p-4">
       {/* Check if inventory is loading or if there was an error */}
       {inventory.isLoading ? (
@@ -94,6 +95,7 @@ const Inventory = () => {
         />
       )}
     </View>
+    </SafeAreaView>
   );
 };
 

@@ -54,48 +54,25 @@ const RootLayout = () => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <DataProvider>
-          <Stack>
-            <Stack.Screen
-              name="index"
-              options={{
-                headerShown: false,
-                gestureEnabled: false,
-              }}
-            />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              gestureEnabled: false,
+            }}
+          >
+            <Stack.Screen name="index" />
             <Stack.Screen
               name="login"
               options={{
-                headerShown: false,
-                gestureEnabled: false,
+                title: "Login",
               }}
             />
+            <Stack.Screen name="(tabs)" />
+
             <Stack.Screen
-              name="scan"
-              options={{
-                headerTitle: "Scan",
-                headerBackVisible: false,
-                gestureEnabled: false,
-              }}
-            />
-            <Stack.Screen
-              name="settings"
-              options={{
-                headerTitle: "Settings",
-                gestureEnabled: false,
-              }}
-            />
-            <Stack.Screen
-              name="inventory"
-              options={{
-                headerTitle: "Inventory",
-                gestureEnabled: false,
-              }}
-            />
-                        <Stack.Screen
               name="productDetails"
               options={{
-                headerTitle: "Product Details",
-                gestureEnabled: false,
+                title: "Product Details",
               }}
             />
           </Stack>

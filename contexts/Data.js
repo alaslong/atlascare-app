@@ -18,6 +18,44 @@ export const DataProvider = ({ children }) => {
   const { user } = useAuth(); // Get user from Auth context
 
   const [selectedPractice, setSelectedPractice] = useState(null); // State for selected practice
+  const [scanMode, setScanMode] = useState(null)
+
+  // Load selectedPractice from AsyncStorage on mount
+  useEffect(() => {
+    const loadScanMode = async () => {
+      try {
+        const storedScanMode = await AsyncStorage.getItem("scanMode");
+        if (storedScanMode) {
+          setScanMode(storedScanMode);
+        } else {
+          setScanMode("retrieve"); // Default to retrieve mode if none is stored
+        }
+      } catch (error) {
+        console.error("Failed to load selected practice from storage:", error);
+      }
+    };
+
+    loadScanMode();
+  }, []);
+
+  // Save selectedPractice to AsyncStorage whenever it changes
+  useEffect(() => {
+    const storeScanMode = async () => {
+      if (scanMode) {
+        try {
+          await AsyncStorage.setItem(
+            "scanMode",
+            scanMode
+          );
+        } catch (error) {
+          console.error("Failed to save selected practice to storage:", error);
+        }
+      }
+    };
+
+    storeScanMode();
+  }, [scanMode]);
+
 
   // Load selectedPractice from AsyncStorage on mount
   useEffect(() => {
@@ -106,6 +144,8 @@ export const DataProvider = ({ children }) => {
       error: inventoryError,
       refetch: refetchInventory,
     },
+    scanMode,
+    setScanMode,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
