@@ -17,7 +17,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import ProductListItemScan from "@/components/scan/ScannedProductsListItem";
+import ScannedProductsItem from "@/components/scan/ScannedProductsItem";
 import { useTranslation } from "react-i18next";
 import {
   useAddToInventory,
@@ -26,30 +26,35 @@ import {
 import { useData } from "@/contexts/Data";
 import { FontAwesome6 } from "@expo/vector-icons";
 
+
+import { useQueryClient } from "@tanstack/react-query";
+
 // Function to calculate snap points for the bottom sheet modal
 const calculateSnapPoints = (itemCount) => {
   const { height } = Dimensions.get("window");
   const itemHeight = 70; // Estimated height of each item (including padding/margin)
   const maxHeight = height * 0.8;
-  const minHeight = Math.min(itemCount * itemHeight + 70, maxHeight); // Minimum height based on item count
+  const minHeight = Math.min(itemCount * itemHeight + 90, maxHeight); // Minimum height based on item count
 
   return [minHeight, maxHeight]; // Two snap points: min and max heights
 };
 
 const ScannedProductsList = ({
-  scannedProducts,
-  setScannedProducts,
+
   onClose,
+  unpauseScanning,
 }) => {
   const { t } = useTranslation();
+  const { practices, scanMode, products } = useData(); // Fetch the selected practice
   const bottomSheetModalRef = useRef(null);
   const [scannedProductsListVisible, setScannedProductsListVisible] =
     useState(false); // To control modal visibility
   const snapPoints = useMemo(
-    () => calculateSnapPoints(scannedProducts.length),
-    [scannedProducts.length]
+    () => calculateSnapPoints(products.scanned.length),
+    [products.scanned.length]
   );
-  const { practices, scanMode } = useData(); // Fetch the selected practice
+
+  const queryClient = useQueryClient();
 
   // Mutations for inventory management
   const addToInventory = useAddToInventory();
@@ -57,12 +62,12 @@ const ScannedProductsList = ({
 
   // Effect to hide the scanned products list when all items are removed
   useEffect(() => {
-    if (scannedProducts.length > 0) {
+    if (products.scanned.length > 0) {
       setScannedProductsListVisible(true);
-    } else if (scannedProducts.length === 0) {
+    } else if (products.scanned.length === 0) {
       setScannedProductsListVisible(false);
     }
-  }, [scannedProducts]); // Trigger this effect whenever `scannedProducts` changes
+  }, [products.scanned]); // Trigger this effect whenever `scannedProducts` changes
 
   // Control modal visibility
   useEffect(() => {
@@ -87,34 +92,46 @@ const ScannedProductsList = ({
     try {
       await mutation.mutateAsync({
         clientPracticeId,
-        products: scannedProducts,
+        products: products.scanned,
       });
       // onConfirm(); // Post mutation success handling
     } catch (error) {
       console.error("Error processing inventory action:", error);
+    } finally {
+      queryClient.invalidateQueries("inventory", practices.selected.id);
+      products.setScanned([]);
+      unpauseScanning();
     }
   };
 
   // Footer without using BottomSheetFooter directly (just pass the footer content)
   const renderFooter = useCallback(
     (props) => (
-      <BottomSheetFooter {...props} bottomInset={7} >
-        <View className="flex-row mx-2 gap-2">
+      <BottomSheetFooter {...props} bottomInset={0}>
+        <View className="flex-row m-2 gap-2 z-10">
           <TouchableOpacity
             onPress={handleConfirmAction}
-            className="bg-[#3b8ae6] rounded-lg p-3 justify-center items-center flex-grow"
+            className="bg-[#3b8ae6] px-4 py-2 rounded-2xl justify-between items-center flex-row flex-grow"
           >
-            <Text className="text-white text-center text-xl font-semibold">
+            <Text className="text-white text-center text-lg font-semibold">
               {scanMode === "retrieve"
                 ? t("removeFromInventory")
                 : t("addToInventory")}
             </Text>
+            <FontAwesome6
+              name={scanMode === "retrieve" ? "minus" : "plus"}
+              color="white"
+              size={16}
+            />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setScannedProducts([])}
-            className="bg-gray-300 rounded-lg p-4 justify-center items-center"
+            onPress={() => {
+              products.setScanned([]);
+              unpauseScanning();
+            }}
+            className="bg-gray-300 px-4 py-2 rounded-2xl justify-center items-center"
           >
-            <FontAwesome6 name="xmark" color="gray" size={17} />
+            <FontAwesome6 name="xmark" color="gray" size={16} />
           </TouchableOpacity>
         </View>
       </BottomSheetFooter>
@@ -124,25 +141,28 @@ const ScannedProductsList = ({
 
   const handleRemoveItem = useCallback(
     (productNumber, expiryDate, batchNumber) => {
-      setScannedProducts((prevProducts) =>
-        prevProducts.map((item) => {
-          if (
-            item.productNumber === productNumber &&
-            item.expiryDate === expiryDate &&
-            item.batchNumber === batchNumber
-          ) {
-            // If quantity is more than 1, reduce by 1
-            if (item.quantity > 1) {
-              return { ...item, quantity: item.quantity - 1 };
-            }
-            // If quantity is 1, remove the item (by not returning it in the new array)
-            return null;
-          }
-          return item;
-        }).filter(Boolean) // Remove null entries from the array
+      products.setScanned(
+        (prevProducts) =>
+          prevProducts
+            .map((item) => {
+              if (
+                item.productNumber === productNumber &&
+                item.expiryDate === expiryDate &&
+                item.batchNumber === batchNumber
+              ) {
+                // If quantity is more than 1, reduce by 1
+                if (item.quantity > 1) {
+                  return { ...item, quantity: item.quantity - 1 };
+                }
+                // If quantity is 1, remove the item (by not returning it in the new array)
+                return null;
+              }
+              return item;
+            })
+            .filter(Boolean) // Remove null entries from the array
       );
     },
-    [setScannedProducts]
+    [products.setScanned]
   );
 
   return (
@@ -154,19 +174,23 @@ const ScannedProductsList = ({
         enablePanDownToClose={false}
         onDismiss={onClose}
         footerComponent={renderFooter} // Correctly pass the footer content
-        backgroundStyle={{backgroundColor: '#fefefe', shadowColor: '#000000', shadowOpacity: 0.1, shadowRadius: 20}}
-      
-       
+        backgroundStyle={{
+          backgroundColor: "#fefefe",
+          shadowColor: "#000000",
+          shadowOpacity: 0.1,
+          shadowRadius: 20,
+        }}
       >
-        <View className="flex-1 px-2">
+        <View className="flex-1 px-2 z-10">
+          <Text className="px-2 mb-2 font-semibold">Scanned products</Text>
           <FlatList
-            data={scannedProducts.slice().reverse()}
+            data={products.scanned.slice().reverse()}
             scrollEnabled={false}
             keyExtractor={(item, index) =>
               item.productNumber?.toString() || index.toString()
             }
             renderItem={({ item }) => (
-              <ProductListItemScan
+              <ScannedProductsItem
                 item={item}
                 onRemove={() =>
                   handleRemoveItem(

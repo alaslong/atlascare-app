@@ -1,14 +1,27 @@
-import React from "react";
-import { SafeAreaView, View, Text, FlatList, Image, TouchableOpacity } from "react-native";
-import { useData } from "../../contexts/Data";
+import React, { useState } from "react";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import { useData } from "@/contexts/Data";
 import { useRouter } from "expo-router"; // Import the router hook
 import {
   ExpiryBadge,
   QuantityText,
-} from "../../components/inventory/ColourCalculators"; // Import the colour utilities
+} from "@/components/inventory/ColourCalculators"; // Import the colour utilities
 
 const Inventory = () => {
-  const { inventory } = useData();
+  const { inventoryStock } = useData();
+
+  if (inventoryStock.data === undefined) inventoryStock.refetch();
+
+
+  console.log(inventoryStock.filtered)
+ 
 
   const router = useRouter();
 
@@ -40,13 +53,13 @@ const Inventory = () => {
 
   // Render each grouped product in the list
   const renderItem = ({ item }) => {
-  
+ 
 
     return (
       <TouchableOpacity
         onPress={() =>
           router.push({
-            pathname: "/productDetails",
+            pathname: "/inventory/productDetails",
             params: { productId: item.productId },
           })
         } // Navigate to ProductDetails
@@ -68,6 +81,9 @@ const Inventory = () => {
             <Text className="text-sm text-gray-700 mt-1">
               Product Number: {item.productNumber}
             </Text>
+            <Text className="text-sm text-gray-700 mt-1">
+              {item.clientInventoryName}
+            </Text>
             <QuantityText quantity={item.totalQuantity} item={item} />
           </View>
 
@@ -79,22 +95,23 @@ const Inventory = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-    <View className="flex-1 bg-white p-4">
-      {/* Check if inventory is loading or if there was an error */}
-      {inventory.isLoading ? (
-        <Text>Loading inventory...</Text>
-      ) : inventory.isError ? (
-        <Text>Error loading inventory: {inventory.error.message}</Text>
-      ) : (
-        <FlatList
-          data={groupByProduct(inventory.data)}
-          keyExtractor={(item) => item.productId.toString()}
-          renderItem={renderItem}
-          contentContainerStyle={{ paddingBottom: 16 }}
-        />
-      )}
-    </View>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <View className="flex-1 p-4">
+        {/* Check if inventory is loading or if there was an error */}
+        {inventoryStock.isLoading ? (
+          <Text>Loading inventory...</Text>
+        ) : inventoryStock.isError ? (
+          <Text>Error loading inventory: {inventoryStock.error.message}</Text>
+        ) : (
+          <FlatList
+            data={groupByProduct(inventoryStock?.filtered.length > 0 ? inventoryStock.filtered : inventoryStock.data)}
+            keyExtractor={(item) => item.productId.toString()}
+            renderItem={renderItem}
+            contentContainerStyle={{ paddingBottom: 16 }}
+          />
+        )}
+      </View>
+
     </SafeAreaView>
   );
 };

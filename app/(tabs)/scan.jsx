@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   SafeAreaView,
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
+
+import { useFocusEffect } from "expo-router";
 import LoadingScreen from "@/components/LoadingScreen";
 import Overlay from "@/components/scan/Overlay";
 import ViewFinderBorder from "@/components/scan/ViewFinderBorder";
@@ -14,17 +16,25 @@ import scanHandler from "../../utils/scanHandler";
 import ScannedProductsList from "../../components/scan/ScannedProductsList";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useData } from "@/contexts/Data";
+import { useTranslation } from "react-i18next";
 
 const Scan = () => {
   const [permission, requestPermission] = useCameraPermissions();
   const [canScan, setCanScan] = useState(true);
+
+  const [cameraMounted, setCameraMounted] = useState(false);
+  
   const [paused, setPaused] = useState(false);
   const [lastScannedData, setLastScannedData] = useState(null);
-  const [scannedProducts, setScannedProducts] = useState([]);
-  const [colourStatus, setColourStatus] = useState("default");
   
+  const [colourStatus, setColourStatus] = useState("default");
+
   const cameraRef = useRef(null);
-  const { scanMode } = useData();
+
+  const { products } = useData();
+
+
+  const { t } = useTranslation();
 
   const { width, height } = Dimensions.get("window");
 
@@ -32,6 +42,14 @@ const Scan = () => {
   const windowHeight = 350;
   const windowX = width / 2 - windowWidth / 2;
   const windowY = height / 20 - windowHeight / 20;
+
+  useFocusEffect(() => {
+  setCameraMounted(true);
+    return () => {
+      setCameraMounted(false);
+    };
+  })
+
 
   const barcodeWithin = (cornerPoints) => {
     if (!cornerPoints) return false;
@@ -52,21 +70,17 @@ const Scan = () => {
     setPaused,
     setLastScannedData,
     barcodeWithin,
-    scannedProducts,
-    setScannedProducts,
-    setColourStatus
+    setColourStatus,
   });
 
   const unpauseScanning = () => {
     setPaused(false);
     setCanScan(true);
 
-setColourStatus('default')
+    setColourStatus("default");
 
     setTimeout(() => setLastScannedData(null), 1000);
   };
-
-
 
   if (!permission) return <LoadingScreen />;
   if (!permission.granted)
@@ -82,15 +96,20 @@ setColourStatus('default')
     );
 
   return (
-    <GestureHandlerRootView className="bg-gray-50 flex-1">
-      <SafeAreaView className="flex-1">
+    <GestureHandlerRootView className="flex-1">
+      <SafeAreaView className="flex-1 bg-gray-50">
         <View className="flex-1">
-          <CameraView
-            style={{ flex: 1 }}
-            facing="back"
-            onBarcodeScanned={canScan && !paused ? handleBarcodeScanned : null}
-            ref={cameraRef}
-          />
+          {cameraMounted &&
+            <CameraView
+              style={{ flex: 1, zIndex: -30 }}
+              facing="back"
+              onBarcodeScanned={
+                canScan && !paused ? handleBarcodeScanned : null
+              }
+              ref={cameraRef}
+            />}
+          
+
           {/* Pass the unified animated style */}
           <ViewFinderBorder
             windowX={windowX}
@@ -109,13 +128,18 @@ setColourStatus('default')
             windowHeight={windowHeight}
             paused={paused}
             unpauseScanning={unpauseScanning}
+        
           />
 
           <View className="absolute h-full w-full flex-col p-5">
             <View className="flex-1 justify-end items-center">
-              <View className="h-1/2 pt-3">
+              <View className="h-1/2 pt-3 flex-col items-center gap-3">
                 {!paused ? (
-                  <Text className="text-xl text-gray-600">{`Scan to ${scanMode}`}</Text>
+                  <Text className="text-xl text-gray-600">
+                    {products.scanned.length === 0
+                      ? `Scan first product to start`
+                      : "Scan the next product"}
+                  </Text>
                 ) : (
                   <TouchableOpacity onPress={unpauseScanning}>
                     <Text className="text-xl text-gray-600">
@@ -129,9 +153,8 @@ setColourStatus('default')
 
           {/* Modal for scanned products */}
           <ScannedProductsList
-            scannedProducts={scannedProducts}
-            setScannedProducts={setScannedProducts}
             out={false}
+            unpauseScanning={unpauseScanning}
           />
         </View>
       </SafeAreaView>

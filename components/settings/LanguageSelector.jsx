@@ -8,6 +8,7 @@ import {
   Easing,
 } from "react-native";
 import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import ToggleButton from "./ToggleButton";
 
@@ -61,7 +62,10 @@ const LanguageSelector = () => {
   // Render individual language item with full name
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => i18n.changeLanguage(item)}
+      onPress={async () => {
+        i18n.changeLanguage(item);
+        await AsyncStorage.setItem("storedLocale", initialLanguage);
+      }}
       className={`flex-1 p-4 border-gray-300 rounded-xl items-center ${
         i18n.language === item ? "bg-teal-300" : ""
       }`}

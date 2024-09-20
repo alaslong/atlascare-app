@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Fetch inventory for a specific client practice
-export const fetchInventory = async (clientPracticeId) => {
+export const fetchInventoryStock = async (clientPracticeId) => {
   const response = await axios.get(
     `${process.env.EXPO_PUBLIC_API_URL}/api/inventory`,
     { params: { client_practice_id: clientPracticeId } }

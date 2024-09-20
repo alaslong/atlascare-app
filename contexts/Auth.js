@@ -1,70 +1,54 @@
+// contexts/Auth.js
 import React, { createContext, useContext, useEffect } from "react";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { useRouter } from "expo-router";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 
-// Create AuthContext
 const AuthContext = createContext();
 
-// Custom hook to use the AuthContext
 export const useAuth = () => {
     return useContext(AuthContext);
 };
 
-// AuthProvider component that wraps the app and provides auth state
 export const AuthProvider = ({ children }) => {
-    const router = useRouter();
     const queryClient = useQueryClient();
 
-    // Function to save tokens securely (JSON-encoded)
     const saveTokens = async (accessToken, refreshToken) => {
         await SecureStore.setItemAsync("accessToken", JSON.stringify(accessToken));
         await SecureStore.setItemAsync("refreshToken", JSON.stringify(refreshToken));
     };
 
-    // Function to retrieve tokens (JSON-decoded)
     const getTokens = async () => {
         const accessToken = await SecureStore.getItemAsync("accessToken");
         const refreshToken = await SecureStore.getItemAsync("refreshToken");
-
         return {
             accessToken: accessToken ? JSON.parse(accessToken) : null,
             refreshToken: refreshToken ? JSON.parse(refreshToken) : null,
         };
     };
 
-    // Function to delete tokens
     const deleteTokens = async () => {
         await SecureStore.deleteItemAsync("accessToken");
         await SecureStore.deleteItemAsync("refreshToken");
     };
 
-    // Function to refresh access token using refresh token
     const refreshAccessToken = async () => {
         const { refreshToken } = await getTokens();
         if (!refreshToken) {
-        //     console.log("No refresh token available, logging out");
-            await deleteTokens(); // Remove invalid tokens
+            await deleteTokens();
             return null;
         }
 
         try {
-            const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/refresh`, {
-                refreshToken,
-            });
-
-            // Save new access token and refresh token
+            const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/refresh`, { refreshToken });
             await saveTokens(response.data.accessToken, response.data.refreshToken);
-            return response.data.accessToken; // Return the new access token
+            return response.data.accessToken;
         } catch (error) {
-            console.error("Failed to refresh access token:", error);
-            await deleteTokens(); // Remove invalid tokens
+            await deleteTokens();
             return null;
         }
     };
 
-    // React Query to check authentication and refresh token if needed
     const {
         data: user,
         isLoading,
@@ -73,92 +57,97 @@ export const AuthProvider = ({ children }) => {
     } = useQuery({
         queryKey: ["auth", "user"],
         queryFn: async () => {
-            const { accessToken, refreshToken } = await getTokens();
-            // console.log("Access Token:", accessToken); // Check if the access token exists
-            // console.log("Refresh Token:", refreshToken); // Check if the refresh token exists
+            const { accessToken } = await getTokens();
 
-            // If no access token, try refreshing it using the refresh token
             if (!accessToken) {
-                // console.log("No access token, attempting to refresh with refresh token");
                 const newAccessToken = await refreshAccessToken();
-                if (!newAccessToken) {
-                    // console.log("Unable to refresh access token, logging out");
+                if (!newAccessToken) return null;
+
+                try {
+                    const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/verify`, {
+                        headers: { Authorization: `Bearer ${newAccessToken}` },
+                    });
+                    return response.data.user;
+                } catch {
                     await deleteTokens();
-                    queryClient.removeQueries(["auth", "user"]); // Remove user from cache
-                    router.navigate("/login"); // Redirect to login
                     return null;
                 }
-                // console.log("Successfully refreshed access token");
-                return checkAuth(); // Retry authentication check with new access token
             }
 
             try {
-                // console.log("Making auth check request");
                 const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/verify`, {
                     headers: { Authorization: `Bearer ${accessToken}` },
                 });
-                // console.log("Check auth response:", response.data);
-                return response.data.user; // Token is valid, return user
-            } catch (error) {
-              
-                if (error.response?.status === 401) {
-                    // If access token is expired, attempt to refresh it
+                return response.data.user;
+            } catch (authError) {
+                if (authError.response?.status === 401) {
                     const refreshedToken = await refreshAccessToken();
                     if (refreshedToken) {
-                        const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/verify`, {
-                            headers: { Authorization: `Bearer ${refreshedToken}` },
-                        });
-                        return response.data.user;
+                        try {
+                            const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/verify`, {
+                                headers: { Authorization: `Bearer ${refreshedToken}` },
+                            });
+                            return response.data.user;
+                        } catch {
+                            await deleteTokens();
+                            return null;
+                        }
                     }
                 }
-                await deleteTokens(); // Token is invalid or refresh failed, log out the user
-                queryClient.removeQueries(["auth", "user"]); // Remove user from cache
-                router.navigate("/login"); // Redirect to login
+                await deleteTokens();
                 return null;
             }
         },
-        enabled: false, // Don't automatically run the query
-        retry: false, // Don't retry if it fails
+        enabled: false,
+        retry: false,
     });
 
-    // Fetch user data on mount
     useEffect(() => {
-        // console.log("Checking auth status on mount");
-        checkAuth(); // This will manually trigger the query
+        checkAuth().catch(console.error);
     }, []);
 
-    // React Query mutation for login
     const loginMutation = useMutation({
         mutationFn: async (credentials) => {
             const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/login`, credentials);
             await saveTokens(response.data.accessToken, response.data.refreshToken);
-            return response.data.user; // Return the user data
+            return response.data.user;
         },
         onSuccess: (userData) => {
-            queryClient.setQueryData(["auth", "user"], userData); // Set user data in cache
-            router.push("/scan"); // Navigate to scan
+            queryClient.setQueryData(["auth", "user"], userData);
         },
         onError: (error) => {
             console.error("Login error:", error);
         },
     });
 
-    // React Query mutation for logout
+    // Custom login function with onSuccess callback
+    const login = (credentials, onSuccess) => {
+        loginMutation.mutate(credentials, {
+            onSuccess: () => {
+                if (onSuccess && typeof onSuccess === 'function') {
+                    onSuccess();
+                }
+            },
+            onError: (error) => {
+                console.error("Login error inside login:", error);
+            },
+        });
+    };
+
     const logoutMutation = useMutation({
         mutationFn: async () => {
-            await deleteTokens(); // Remove tokens from SecureStore
-            queryClient.removeQueries(["auth", "user"]); // Remove user from cache
-            router.navigate("/login"); // Navigate to login screen
+            await deleteTokens();
+            queryClient.removeQueries(["auth", "user"]);
         },
     });
 
     const value = {
         user,
-        login: loginMutation.mutate, // Expose login mutation
-        logout: logoutMutation.mutate, // Expose logout mutation
-        checkAuth, // Expose checkAuth function to refetch user data
-        loading: isLoading, // Loading state for auth check
-        error, // Error state for auth check
+        login,
+        logout: logoutMutation.mutate,
+        checkAuth,
+        loading: isLoading,
+        error,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

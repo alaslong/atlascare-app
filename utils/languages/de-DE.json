@@ -1,27 +1,27 @@
 {
   "translation": {
-    // LOGIN
+    
     "email": "E-Mail",
     "enterEmail": "Geben Sie Ihre E-Mail-Adresse ein",
     "password": "Passwort",
     "enterPassword": "Ihr Passwort eingeben",
     "login": "Anmelden",
     "noAccountYet": "Sie haben noch kein Konto?",
-    // REGISTER
+
     "initialAccount": "Die Ersteinrichtung Ihres Kontos muss an einem Computer erfolgen.",
     "pleaseVisit": "Bitte besuchen Sie",
     "toBegin": "um den Prozess zu beginnen.",
     "alternatively": "Oder geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zu.",
     "send": "Senden",
     "backToLogin": "Zurück zur Anmeldung",
-    // INVENTORY
+
     "inventory": "Lager",
     "quantity": "Anzahl",
     "search": "Suchen",
     "noArticlesInInventory": "Es befinden sich keine Artikel im Lager.",
     "noStorageLocation": "Kein Lagerort",
     "noExpiryDate": "Kein Verfallsdatum",
-    //NOTIFICATIONS
+  
     "minimumStockLevel": "Mindestbestand",
     "reportStockLevel": "Meldebestand",
     "expired":"Abgelaufen",
@@ -35,7 +35,7 @@
     "expiryDateArea":"Haltbarkeit",
     "No products here.": "Keine Artikel in dieser Kategorie.",
 
-    // SCAN
+    
     "scan": "Scannen",
     "store": "Einlagern",
     "retrieve": "Auslagern",
@@ -48,7 +48,7 @@
     "scannedArticles": "Gescannte Artikel",
     "addToInventory": "Artikel einlagern",
     "removeFromInventory": "Artikel auslagern",
-    // SETTINGS
+    
     "settings": "Einstellungen",
     "signedInAs": "Angemeldet als",
     "signOut": "Abmelden",
@@ -57,7 +57,7 @@
     "language": "Sprache",
     "english": "Englisch",
     "german": "Deutsch",
-    // ADD/EDIT PRODUCT
+    
     "productDetails": "Produktdetails",
     "addProduct": "Produkt hinzufügen",
     "productName": "Produktname",
@@ -70,7 +70,7 @@
     "confirm": "Bestätigen",
     "cancel": "Abbrechen",
     "externalProductName": "Dieser Produktname stammt von einer externen Quelle.",
-    // ALERTS
+    
     "success": "Erfolg",
     "itemAddedSuccessfully": "Artikel erfolgreich hinzugefügt",
     "productAddedSuccessfully": "Produkt erfolgreich hinzugefügt",
@@ -88,6 +88,6 @@
     "restockQuantity": "Nachfüllmenge",
     "warningStockLevel": "Warnung bei Lagerbestand",
     "criticalStockLevel": "Kritischer Lagerbestand",
-    "back": "Zurück",
+    "back": "Zurück"
   }
 }

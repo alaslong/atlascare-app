@@ -1,27 +1,27 @@
 {
   "translation": {
-    // LOGIN
+  
     "email": "Email",
     "enterEmail": "Enter your email",
     "password": "Password",
     "enterPassword": "Enter your password",
     "login": "Login",
     "noAccountYet": "Don't have an account yet?",
-    // REGISTER
+
     "initialAccount": "Your initial account setup must be done on a computer.",
     "pleaseVisit": "Please visit",
     "toBegin": "to begin the process",
     "alternatively": "Alternatively, enter your email address and we'll send a link.",
     "send": "Send",
     "backToLogin": "Back to login",
-    // INVENTORY
+
     "inventory": "Inventory",
     "quantity": "Quantity",
     "search": "Search",
     "noArticlesInInventory": "No articles in inventory.",
     "noStorageLocation": "No storage location",
     "noExpiryDate": "No expirydate",
-    // SCAN
+
     "scan": "Scan",
     "store": "Store",
     "barcode": "Barcode",
@@ -34,7 +34,7 @@
     "scannedArticles": "Scanned articles",
     "addToInventory": "Add to inventory",
     "removeFromInventory": "Remove from inventory",
-    //NOTIFICATIONS
+    
     "notifications": "Notifications",
     "noNotifications": "You have no notifications.",
     "stockLevel": "Stock Level",
@@ -48,7 +48,7 @@
     "expiryDateArea":"Expiry Date",
     "errorLoadingInventoryStocks": "Error loading inventory stocks.",
     "No products here.": "No Articles in this category.",
-    // SETTINGS
+   
     "settings": "Settings",
     "signedInAs": "Signed in as",
     "signOut": "Sign out",
@@ -57,7 +57,7 @@
     "language": "Language",
     "english": "English",
     "german": "German",
-    // ADD/EDIT PRODUCT
+  
     "productDetails": "Product Details",
     "addProduct": "Add Product",
     "productName": "Product Name",
@@ -70,7 +70,7 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "externalProductName": "This product name is from an external source.",
-    // ALERTS
+    
     "success": "Success",
     "itemAddedSuccessfully": "Product added successfully",
     "productAddedSuccessfully": "Product added successfully",

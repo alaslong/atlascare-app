@@ -48,8 +48,8 @@ export const QuantityText = ({ quantity, item }) => {
   const quantityColour = calculateQuantityColour(quantity, item);
 
   return (
-    <Text className={`text-sm mt-1 ${quantityColour}`}>
-      Quantity: {quantity}
+    <Text className={`text-sm mt-1`}>
+      Quantity: <Text className={quantityColour}>{quantity}</Text> / {item.normalLevel}
     </Text>
   );
 };

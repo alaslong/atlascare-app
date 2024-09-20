@@ -15,10 +15,9 @@ const scanHandler = ({
   setPaused,
   setLastScannedData,
   barcodeWithin,
-  scannedProducts,
-  setScannedProducts, // Pass setScannedProducts to update modal content
+
 }) => {
-  const { practices } = useData(); // Fetch the selected practice
+  const { practices, products } = useData(); // Fetch the selected practice
 
 
 
@@ -41,7 +40,7 @@ const scanHandler = ({
         setLastScannedData(data);
         Vibration.vibrate(); // Trigger vibration
 
-        setColourStatus('green')
+        setColourStatus('blue')
 
         try {
           const payload = {
@@ -55,7 +54,7 @@ const scanHandler = ({
 
           if (productInfo) {
             // Check if product already exists in the scannedProducts (ensure it's an array)
-            const existingProductIndex = scannedProducts.findIndex(
+            const existingProductIndex = products.scanned.findIndex(
               (item) =>
                 item.productNumber === payload.productNumber &&
                 item.batchNumber === payload.batchNumber
@@ -63,12 +62,12 @@ const scanHandler = ({
 
             // If product exists, increment the local quantity
             if (existingProductIndex !== -1) {
-              const updatedProducts = [...scannedProducts];
+              const updatedProducts = [...products.scanned];
               updatedProducts[existingProductIndex].quantity += 1; // Increment local quantity
-              setScannedProducts(updatedProducts);
+              products.setScanned(updatedProducts);
             } else {
               // If product doesn't exist, add it with quantity = 1
-              setScannedProducts((prevProducts) => [
+              products.setScanned((prevProducts) => [
                 ...prevProducts,
                 {
                   ...productInfo,

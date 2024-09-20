@@ -12,7 +12,7 @@ const Overlay = ({
   paused,
 }) => {
   return (
-    <View className="absolute" >
+    <View className="absolute -z-20">
       <Svg height={height} width={width}>
         <Defs> 
           <Mask id="mask" x="0" y="0" width={width} height={height}>

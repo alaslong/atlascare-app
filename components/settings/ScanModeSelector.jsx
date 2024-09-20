@@ -14,7 +14,7 @@ import ToggleButton from "./ToggleButton";
 
 const modes = [
   { mode: "retrieve", label: "Retrieve" },
-  { mode: "store", label: "Store" },
+  { mode: "restock", label: "Restock" },
 ];
 
 const ScanModeSelector = () => {

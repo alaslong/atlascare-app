@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { addProduct, removeProduct } from '@/hooks/post/inventory';
-import { fetchInventoryProduct } from "../../../hooks/fetch/inventory";
+import { fetchInventoryProduct } from "../../../hooks/fetch/inventoryStock";
 
 // Mutation for adding product to inventory using axios
 export const useAddToInventory = () => {
