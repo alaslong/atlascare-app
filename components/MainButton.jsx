@@ -238,11 +238,10 @@ const MainButton = () => {
     (event) => {
       const { width } = event.nativeEvent.layout;
 
-      const iconWidth = 20; // Icon size
-      const gap = 12; // Gap between text and icon
-      const padding = 50; // Padding on both sides
 
-      const totalWidth = width + gap + iconWidth + padding;
+      const padding = 65; // Padding on both sides
+
+      const totalWidth = width + padding;
 
       const deltaWidth = Math.abs(totalWidth - lastWidthRef.current);
       const durationWidth = calculateDuration(deltaWidth);
@@ -292,7 +291,7 @@ const MainButton = () => {
    * Animated styles for the inventory list.
    */
   const inventoryListStyle = useAnimatedStyle(() => ({
-    height: withTiming(isExpanded ? (inventories.data.length + 1) * 55 : 0, {
+    height: withTiming(isExpanded ? (inventories.data.length + 1) * 50 : 0, {
       duration: 200,
     }),
     opacity: withTiming(isExpanded ? 1 : 0, { duration: 200 }),
@@ -304,7 +303,7 @@ const MainButton = () => {
     return (
       <TouchableOpacity
         onPress={() => handleInventorySelect(item)}
-        className="flex-row justify-center items-center py-1 w-full bg-white rounded-lg"
+        className="flex-row justify-center items-center p-1 w-full bg-white rounded-xl"
       >
         <Animated.Text
           className="text-[#3b8ae6] text-lg font-semibold"
@@ -321,13 +320,13 @@ const MainButton = () => {
   return (
     <Animated.View
       style={animatedViewStyle}
-      className="absolute self-center bottom-24 mb-1 rounded-3xl flex-row justify-center items-center overflow-hidden"
+      className="absolute self-center bottom-24 mb-1 rounded-2xl flex-row justify-center items-center overflow-hidden"
     >
       {!isExpanded && (
         <TouchableOpacity
           onPress={onPress}
           activeOpacity={1}
-          className="flex-row justify-center items-center gap-2 p-1 center"
+          className="flex-row justify-center items-center gap-2 py-1"
         >
           <Animated.Text
             style={animatedTextStyle}
@@ -337,13 +336,13 @@ const MainButton = () => {
             {currentConfig.text}
           </Animated.Text>
           <Animated.View style={animatedTextStyle}>
-            <FontAwesome6 name={icon} size={18} color="white" />
+            <FontAwesome6 name={icon} size={16} color="white" />
           </Animated.View>
         </TouchableOpacity>
       )}
 
       {/* Always render the inventory list container */}
-      <Animated.View style={[inventoryListStyle]} className="py-2 gap-1">
+      <Animated.View style={[inventoryListStyle]} className="gap-1">
         {/* Optionally, you can conditionally render the FlatList or control its data */}
         {isExpanded && (
           <FlatList
