@@ -5,7 +5,7 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-import { TouchableOpacity, Text, FlatList, View } from "react-native";
+import { TouchableOpacity, Text, FlatList } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigationState, useNavigation } from "@react-navigation/native";
 import Animated, {
@@ -44,7 +44,7 @@ const useActiveRoute = () => {
 const getButtonConfig = (
   scanMode,
   setScanMode,
-  logout,
+  handleLogout,
   navigation,
   inventories,
   handleExpand,
@@ -81,7 +81,7 @@ const getButtonConfig = (
     },
     settings: {
       text: "Logout",
-      onPress: logout,
+      onPress: handleLogout,
       icon: "right-from-bracket",
       color: "#ef4444",
     },
@@ -109,12 +109,17 @@ const MainButton = () => {
     setIsExpanded((prev) => !prev);
   }, []);
 
+  const handleLogout = useCallback(() => {
+    logout();
+    navigation.replace("login");
+  }, [logout]);
+
   const buttonConfig = useMemo(
     () =>
       getButtonConfig(
         scanMode,
         setScanMode,
-        logout,
+        handleLogout,
         navigation,
         inventories,
         handleExpand,
