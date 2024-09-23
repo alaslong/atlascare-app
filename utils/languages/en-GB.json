@@ -95,6 +95,8 @@
     "scanFirstProduct": "Scan first product to start",
     "scanNextProduct": "Scan the next product",
     "mode": "Mode",
+    "Mode: Restock": "Mode: Restock",
+    "Mode: Retrieve": "Mode: Retrieve",
     "allInventories": "All inventories",
     "currentStock": "Current stock",
     "lowStock": "Low stock",

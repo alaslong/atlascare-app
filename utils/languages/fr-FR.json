@@ -87,13 +87,15 @@
       "scanFirstProduct": "Scanner le premier produit pour démarrer",
       "scanNextProduct": "Scanner le produit suivant",
       "mode": "Mode",
+      "Mode: Restock": "Mode: Entreposer",
+      "Mode: Retrieve": "Mode: Récupérer",
       "allInventories": "Tous les inventaires",
       "currentStock": "Stock actuel",
       "lowStock": "Faible stock",
       "criticalStock": "Stock critique",
       "expiredStock": "Articles expirés",
       "expiringTwoWeeks": "Expirant dans 2 semaines",
-      "expiringOneMonth": "Expirant dans 1 mois",
+      "expiringOneMonth": "Expirant dans 1 mois"
   
     }
   }

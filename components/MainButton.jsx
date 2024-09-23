@@ -55,29 +55,25 @@ const getButtonConfig = (
 
   return {
     inventory: {
-      text: inventories.selected
-        ? inventories.selected.name
-        : t('allInventories'),
+      text: inventories.selected ? inventories.selected.name : 'allInventories',
       onPress: handleExpand,
       icon: "eye",
       color: "#3b8ae6",
     },
     inventoryTab: {
-      text: inventories.selected
-        ? inventories.selected.name
-        : t('allInventories'),
+      text: inventories.selected ? inventories.selected.name : 'allInventories',
       onPress: handleExpand,
       icon: "eye",
       color: "#3b8ae6",
     },
     productDetails: {
-      text: t('back'),
+      text: 'back',
       onPress: () => navigation.navigate("inventoryTab"),
       icon: "arrow-left",
       color: "#3b8ae6",
     },
     scan: {
-      text: `${t('mode')}: ${t(capitalizedScanMode)}`,
+      text: `Mode: ${capitalizedScanMode}`,
       onPress: () =>
         setScanMode(scanMode === "retrieve" ? "restock" : "retrieve"),
       icon: "arrows-rotate",
@@ -336,6 +332,7 @@ const MainButton = () => {
             className="text-white font-semibold text-lg"
           >
             {t(currentConfig.text)}
+
           </Animated.Text>
           <Animated.View style={animatedTextStyle}>
             <FontAwesome6 name={icon} size={16} color="white" />

@@ -95,6 +95,8 @@
     "scanFirstProduct": "Erstes Produkt scannen, um zu starten",
     "scanNextProduct": "Scannen Sie das nächste Produkt",
     "mode": "Modus",
+    "Mode: Restock": "Modus: Einlagern",
+    "Mode: Retrieve": "Modus: Auslagern",
     "allInventories": "Alle Inventare",
     "currentStock": "Aktuelle Lagerbestand",
     "lowStock": "Niedriger Bestand",
