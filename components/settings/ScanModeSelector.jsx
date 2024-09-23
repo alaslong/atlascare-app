@@ -41,7 +41,7 @@ const ScanModeSelector = () => {
   const animatedStyle = {
     height: animation.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 200], // Adjust height if needed
+      outputRange: [0, 600], // Adjust height if needed
     }),
     opacity: animation.interpolate({
       inputRange: [0, 1],
@@ -57,7 +57,7 @@ const ScanModeSelector = () => {
         scanMode === item.mode ? "bg-teal-300" : ""
       }`}
     >
-      <Text className="text-base">{item.label}</Text>
+      <Text className="text-base">{t(item.label)}</Text>
     </TouchableOpacity>
   );
 
@@ -65,11 +65,11 @@ const ScanModeSelector = () => {
     <View className="w-full">
       <View className="flex-row justify-between items-center">
         <Text>
-          <Text className="text-xl font-semibold">{"Scan Mode"}:</Text>
+          <Text className="text-xl font-semibold">{t("scanMode")}:</Text>
           {scanMode && (
             <Text className="text-xl">
               {" "}
-              {modes.find((mode) => mode.mode === scanMode)?.label}
+              {t(`${modes.find((mode) => mode.mode === scanMode)?.label}`)}
             </Text>
           )}
         </Text>

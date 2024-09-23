@@ -137,13 +137,13 @@ const Scan = () => {
                 {!scanState.paused ? (
                   <Text className="text-xl text-gray-600">
                     {products.scanned.length === 0
-                      ? t("Scan first product to start")
-                      : t("Scan the next product")}
+                      ? t("scanFirstProduct")
+                      : t("scanNextProduct")}
                   </Text>
                 ) : (
                   <TouchableOpacity onPress={unpauseScanning}>
                     <Text className="text-xl text-gray-600">
-                      {t("Tap to continue")}
+                      {t("tapToContinue")}
                     </Text>
                   </TouchableOpacity>
                 )}

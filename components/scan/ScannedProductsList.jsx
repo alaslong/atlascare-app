@@ -182,7 +182,7 @@ const ScannedProductsList = ({
         }}
       >
         <View className="flex-1 px-2 z-10">
-          <Text className="px-2 mb-2 font-semibold">Scanned products</Text>
+          <Text className="px-2 mb-2 font-semibold">{t('scannedArticles')}</Text>
           <FlatList
             data={products.scanned.slice().reverse()}
             scrollEnabled={false}

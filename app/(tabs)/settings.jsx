@@ -23,12 +23,7 @@ const Settings = () => {
           <ScanModeSelector />
         </View>
 
-        {/* <MainButton
-          text={t("Logout")}
-          func={logout}
-          colour="bg-red-500"
-          icon="right-from-bracket"
-        /> */}
+
       </View>
     </SafeAreaView>
   );

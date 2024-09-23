@@ -37,7 +37,7 @@ const PracticeSelector = () => {
   const animatedStyle = {
     height: animation.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 200], // Adjust height if needed
+      outputRange: [0, 60], // Adjust height if needed
     }),
     opacity: animation.interpolate({
       inputRange: [0, 1],

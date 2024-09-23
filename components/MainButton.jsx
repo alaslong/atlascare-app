@@ -18,6 +18,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useData } from "@/contexts/Data";
 import { useAuth } from "@/contexts/Auth";
+import { useTranslation } from "react-i18next";
 
 /**
  * Custom hook to retrieve the active route name from the navigation state.
@@ -46,7 +47,8 @@ const getButtonConfig = (
   logout,
   navigation,
   inventories,
-  handleExpand
+  handleExpand,
+  t
 ) => {
   const capitalizedScanMode =
     scanMode.charAt(0).toUpperCase() + scanMode.slice(1);
@@ -55,7 +57,7 @@ const getButtonConfig = (
     inventory: {
       text: inventories.selected
         ? inventories.selected.name
-        : `All inventories`,
+        : t('allInventories'),
       onPress: handleExpand,
       icon: "eye",
       color: "#3b8ae6",
@@ -63,19 +65,19 @@ const getButtonConfig = (
     inventoryTab: {
       text: inventories.selected
         ? inventories.selected.name
-        : `All inventories`,
+        : t('allInventories'),
       onPress: handleExpand,
       icon: "eye",
       color: "#3b8ae6",
     },
     productDetails: {
-      text: "Back",
+      text: t('back'),
       onPress: () => navigation.navigate("inventoryTab"),
       icon: "arrow-left",
       color: "#3b8ae6",
     },
     scan: {
-      text: `Mode: ${capitalizedScanMode}`,
+      text: `${t('mode')}: ${t(capitalizedScanMode)}`,
       onPress: () =>
         setScanMode(scanMode === "retrieve" ? "restock" : "retrieve"),
       icon: "arrows-rotate",
@@ -103,6 +105,7 @@ const MainButton = () => {
   const { logout } = useAuth();
   const activeRoute = useActiveRoute();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -118,7 +121,8 @@ const MainButton = () => {
         logout,
         navigation,
         inventories,
-        handleExpand
+        handleExpand,
+        t
       ),
     [scanMode, setScanMode, logout, navigation, inventories, handleExpand]
   );
@@ -238,7 +242,6 @@ const MainButton = () => {
     (event) => {
       const { width } = event.nativeEvent.layout;
 
-
       const padding = 65; // Padding on both sides
 
       const totalWidth = width + padding;
@@ -309,9 +312,8 @@ const MainButton = () => {
           className="text-[#3b8ae6] text-lg font-semibold"
           style={animatedTextStyle}
           onLayout={handleTextLayout}
-         
         >
-          {item?.name || "All inventories"}
+          {item?.name || t("allInventories")}
         </Animated.Text>
       </TouchableOpacity>
     );
@@ -333,7 +335,7 @@ const MainButton = () => {
             onLayout={handleTextLayout}
             className="text-white font-semibold text-lg"
           >
-            {currentConfig.text}
+            {t(currentConfig.text)}
           </Animated.Text>
           <Animated.View style={animatedTextStyle}>
             <FontAwesome6 name={icon} size={16} color="white" />

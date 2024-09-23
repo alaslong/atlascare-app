@@ -38,7 +38,7 @@
     
     "scan": "Scannen",
     "store": "Einlagern",
-    "retrieve": "Auslagern",
+    "Retrieve": "Auslagern",
     "barcode": "Barcode",
     "noBarcode": "Kein Barcode",
     "cantFindProduct": "Produkt nicht aufgelistet",
@@ -88,6 +88,20 @@
     "restockQuantity": "Nachfüllmenge",
     "warningStockLevel": "Warnung bei Lagerbestand",
     "criticalStockLevel": "Kritischer Lagerbestand",
-    "back": "Zurück"
+    "back": "Zurück",
+    "scanMode": "Scanmodus",
+    "Restock": "Einlagern",
+    "Logout": "Abmelden",
+    "scanFirstProduct": "Erstes Produkt scannen, um zu starten",
+    "scanNextProduct": "Scannen Sie das nächste Produkt",
+    "mode": "Modus",
+    "allInventories": "Alle Inventare",
+    "currentStock": "Aktuelle Lagerbestand",
+    "lowStock": "Niedriger Bestand",
+    "criticalStock": "Kritischer Bestand",
+    "expiredStock": "Abgelaufene Artikel",
+    "expiringTwoWeeks": "In 2 Wochen ablaufend",
+    "expiringOneMonth": "In 1 Monat ablaufend",
+
   }
 }

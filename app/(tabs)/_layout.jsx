@@ -1,8 +1,10 @@
 import { Tabs } from "expo-router";
 import { FontAwesome6 } from "@expo/vector-icons";
 import MainButton from "../../components/MainButton";
+import { useTranslation } from "react-i18next";
 
 export default TabsLayout = () => {
+  const {t} = useTranslation();
   return (
     <>
       <Tabs
@@ -19,7 +21,7 @@ export default TabsLayout = () => {
         <Tabs.Screen
           name="inventory"
           options={{
-            title: "Inventory",
+            title: t('inventory'),
             tabBarIcon: ({ color }) => (
               <FontAwesome6 size={28} name="box" color={color} />
             ),
@@ -29,7 +31,7 @@ export default TabsLayout = () => {
         <Tabs.Screen
           name="scan"
           options={{
-            title: "Scan",
+            title: t('scan'),
             tabBarIcon: ({ color }) => (
               <FontAwesome6 size={28} name="barcode" color={color} />
             ),
@@ -38,7 +40,7 @@ export default TabsLayout = () => {
         <Tabs.Screen
           name="settings"
           options={{
-            title: "Settings",
+            title: t('settings'),
             tabBarIcon: ({ color }) => (
               <FontAwesome6 size={28} name="gears" color={color} />
             ),

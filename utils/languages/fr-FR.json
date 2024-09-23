@@ -79,7 +79,22 @@
       "restockQuantity": "Quantité de réapprovisionnement",
       "warningStockLevel": "Niveau d'avertissement",
       "criticalStockLevel": "Stock critique",
-      "back": "Retour"
+      "back": "Retour",
+      "scanMode": "Mode de numérisation",
+      "Restock": "Entreposer",
+      "Retrieve": "Récupérer",
+      "Logout": "Déconnexion",
+      "scanFirstProduct": "Scanner le premier produit pour démarrer",
+      "scanNextProduct": "Scanner le produit suivant",
+      "mode": "Mode",
+      "allInventories": "Tous les inventaires",
+      "currentStock": "Stock actuel",
+      "lowStock": "Faible stock",
+      "criticalStock": "Stock critique",
+      "expiredStock": "Articles expirés",
+      "expiringTwoWeeks": "Expirant dans 2 semaines",
+      "expiringOneMonth": "Expirant dans 1 mois",
+  
     }
   }
   

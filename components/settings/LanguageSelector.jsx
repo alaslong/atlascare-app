@@ -20,12 +20,7 @@ const LanguageSelector = () => {
     en: "English",
     de: "Deutsch",
     fr: "Français",
-    es: "Español",
-    pt: "Português",
-    it: "Italiano",
-    ja: "日本語",
-    zh: "中文",
-    ko: "한국어",
+
   };
 
   // Array of language codes
@@ -51,7 +46,7 @@ const LanguageSelector = () => {
   const animatedStyle = {
     height: animation.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 200], // Adjust height if needed
+      outputRange: [0, 60], // Adjust height if needed
     }),
     opacity: animation.interpolate({
       inputRange: [0, 1],
@@ -64,7 +59,7 @@ const LanguageSelector = () => {
     <TouchableOpacity
       onPress={async () => {
         i18n.changeLanguage(item);
-        await AsyncStorage.setItem("storedLocale", initialLanguage);
+        await AsyncStorage.setItem("storedLocale", item);
       }}
       className={`flex-1 p-4 border-gray-300 rounded-xl items-center ${
         i18n.language === item ? "bg-teal-300" : ""

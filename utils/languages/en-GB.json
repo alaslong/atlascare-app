@@ -88,6 +88,20 @@
     "restockQuantity": "Restock quantity",
     "warningStockLevel": "Warning level",
     "criticalStockLevel": "Critical stock",
-    "back": "Back"
+    "back": "Back",
+    "scanMode": "Scan mode",
+    "Restock": "Restock",
+    "Logout": "Logout",
+    "scanFirstProduct": "Scan first product to start",
+    "scanNextProduct": "Scan the next product",
+    "mode": "Mode",
+    "allInventories": "All inventories",
+    "currentStock": "Current stock",
+    "lowStock": "Low stock",
+    "criticalStock": "Critical stock",
+    "expiredStock": "Expired stock",
+    "expiringTwoWeeks": "Expiring within 2 weeks",
+    "expiringOneMonth": "Expiring within 1 month",
+
 }
 }

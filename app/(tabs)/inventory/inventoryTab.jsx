@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, View, TouchableOpacity, Text, FlatList } from "react-native";
+import { SafeAreaView, View, TouchableOpacity, Text, FlatList, ActivityIndicator } from "react-native";
 import { useData } from "@/contexts/Data";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "expo-router";
@@ -28,11 +28,13 @@ const groupByProduct = (data) => {
   return Object.values(grouped);
 };
 
-const ListHeader = () => (
+const ListHeader = () => {
+  const { t } = useTranslation();
+  return(
   <View className="mb-4">
-    <Text className="text-xl font-bold">Current stock</Text>
+    <Text className="text-xl font-bold">{t('currentStock')}</Text>
   </View>
-);
+)};
 
 const InventoryItem = ({ item }) => {
   const { t } = useTranslation();
@@ -76,7 +78,7 @@ const Inventory = () => {
     return (
       <SafeAreaView className="flex-1 bg-gray-50">
         <View className="flex-1 p-4">
-          <Text>Loading inventory...</Text>
+          <ActivityIndicator size={10} />
         </View>
       </SafeAreaView>
     );
