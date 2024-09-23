@@ -35,6 +35,19 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3f19ec82-2c0e-4bff-a633-34a3c62663e5"
+      }
+    },
+    "owner": "longmuir",
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/3f19ec82-2c0e-4bff-a633-34a3c62663e5"
     }
   }
 }
